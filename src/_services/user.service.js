@@ -6,6 +6,7 @@ export const userService = {
     logout,
     getAll,
     getUser,
+    getTopTenLovers,
     updatePizzaLoveUser
 };
 
@@ -55,6 +56,15 @@ function getAll() {
     };
 
     return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+}
+
+function getTopTenLovers() {
+    const requestOptions = {
+        method: 'GET',
+        headers: {"Content-Type": "application/json"}
+    };
+
+    return fetch(`${config.apiUrl}/users/GetTopTenUser`, requestOptions).then(handleResponse);
 }
 
 function getUser(id) {

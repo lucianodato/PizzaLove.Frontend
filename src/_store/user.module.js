@@ -15,6 +15,13 @@ export const user = {
                     error => commit('getUserFailure', error)
                 );
         },
+        getTopTenLovers({ commit }) {
+            userService.getTopTenLovers()
+                .then(
+                    topTenLovers => commit('getTopTenLoverSuccess', topTenLovers),
+                    error => commit('getTopTenLoverFailure', error)
+                );
+        },
         updatePizzaLoveForUser({ commit },{ id, pizzaLove }) {
             userService.updatePizzaLoveUser(id, pizzaLove)
             .then(
@@ -31,6 +38,12 @@ export const user = {
             state.all = { user: user };
         },
         getUserFailure(state, error) {
+            state.all = { error };
+        },
+        getTopTenLoverSuccess(state, topTenLovers) {
+            state.all = { ...state.all.topTenLovers, topTenLovers: topTenLovers};
+        },
+        getTopTenLoverFailure(state, error) {
             state.all = { error };
         },
         updatePizzaLoveForUserSuccess(state, pizzaLove) {
