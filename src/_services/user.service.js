@@ -6,7 +6,7 @@ export const userService = {
     logout,
     getAll,
     getUser,
-    updateUser
+    updatePizzaLoveUser
 };
 
 function login(username, password) {
@@ -29,11 +29,14 @@ function login(username, password) {
         });
 }
 
-function updateUser(id, user) {
+function updatePizzaLoveUser(id, pizzaLove) {
     const requestOptions = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        method: 'PATCH',
+        headers: { 
+            'Authorization': authHeader().Authorization,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify([{"value": pizzaLove, "path": "/pizzaLove", "op": "replace"}])
     };
 
     return fetch(`${config.apiUrl}/users/${id}`, requestOptions)

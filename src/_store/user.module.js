@@ -15,16 +15,13 @@ export const user = {
                     error => commit('getUserFailure', error)
                 );
         },
-        increasePizzaLove({ commit },{ id }) {
-            userService.increasePizzaLoveForUser(id);
-
-            commit('getUserRequest');
-            userService.getUser(id)
+        updatePizzaLoveForUser({ commit },{ id, pizzaLove }) {
+            userService.updatePizzaLoveUser(id, pizzaLove)
             .then(
-                user => commit('getUserSuccess', user),
-                error => commit('getUserFailure', error)
+                updatePizzaLove => commit('updatePizzaLoveForUserSuccess', pizzaLove),
+                error => commit('updatePizzaLoveForUserFailure', error)
             );
-        },
+        }
     },
     mutations: {
         getUserRequest(state) {
@@ -34,6 +31,12 @@ export const user = {
             state.all = { user: user };
         },
         getUserFailure(state, error) {
+            state.all = { error };
+        },
+        updatePizzaLoveForUserSuccess(state, pizzaLove) {
+            state.all = { user: {...state.all.user, pizzaLove : pizzaLove }};
+        },
+        updatePizzaLoveForUserFailure(state, error) {
             state.all = { error };
         }
     }
