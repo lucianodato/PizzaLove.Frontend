@@ -6,7 +6,7 @@ export const userService = {
     logout,
     getAll,
     getUser,
-    increasePizzaLoveForUser
+    updateUser
 };
 
 function login(username, password) {
@@ -29,14 +29,15 @@ function login(username, password) {
         });
 }
 
-function increasePizzaLoveForUser(id) {
+function updateUser(id, user) {
     const requestOptions = {
         method: 'PUT',
-        headers: authHeader()
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
     };
 
     return fetch(`${config.apiUrl}/users/${id}`, requestOptions)
-        .then(handleResponse)
+        .then(handleResponse);
 }
 
 function logout() {
