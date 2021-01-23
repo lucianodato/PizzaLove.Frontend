@@ -1,35 +1,28 @@
 // Import the `mount()` method from Vue Test Utils
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import LoginPage from '../login/LoginPage.vue'
-import VueRouter from 'vue-router';
+import TopTenLovers from '../login/TopTenLovers.vue'
 import Vuex from 'vuex';
 
 const localVue = createLocalVue();
-localVue.use(VueRouter);
 localVue.use(Vuex);
 
 const mockActions = {
-  "authentication/logout": jest.fn()
+  "user/getTopTenLovers": jest.fn()
 }
 
 const store = new Vuex.Store({
-  state: {},
+  state: {
+    user: {
+      topTenLovers: []
+    },
+  },
   actions: mockActions
 });
 
-const router = new VueRouter({
-  routes: [
-    {
-      name: 'signup',
-      path: '/signup'
-    }
-  ]
-});
 
-
-test('Mounting LoginPage Component', () => {
+test('Mounting TopTenLovers Component', () => {
   // mount() returns a wrapped Vue component we can interact with
-  const wrapper = shallowMount(LoginPage, {localVue, router, store})
+  const wrapper = shallowMount(TopTenLovers, {localVue, store})
 
   // Assert the rendered text of the component
   expect(wrapper.find('div').exists()).toBe(true)
