@@ -4,7 +4,7 @@
         <p>You're logged in</p>
         <PizzaLove />
         <p>
-            <router-link to="/login" class="btn btn-primary">Logout</router-link>
+            <router-link to="/login" class="btn btn-link">Logout</router-link>
         </p>
     </div>
 </template>
@@ -13,7 +13,6 @@
 import PizzaLove from "./PizzaLove.vue";
 
 export default {
-    name: "Home",
     components: {
         PizzaLove
     },
@@ -22,7 +21,7 @@ export default {
                 return this.$store.state.authentication.user;
             },
             userData () {
-                return this.$store.state.user.all.user;
+                return this.$store.state.user.user;
             }
         },
         created () {

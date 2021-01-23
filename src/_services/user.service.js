@@ -7,7 +7,8 @@ export const userService = {
     getAll,
     getUser,
     getTopTenLovers,
-    updatePizzaLoveUser
+    updatePizzaLoveUser,
+    signUp
 };
 
 function login(username, password) {
@@ -30,17 +31,14 @@ function login(username, password) {
         });
 }
 
-function updatePizzaLoveUser(id, pizzaLove) {
+function signUp(username, password, firstName, lastName) {
     const requestOptions = {
-        method: 'PATCH',
-        headers: { 
-            'Authorization': authHeader().Authorization,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify([{"value": pizzaLove, "path": "/pizzaLove", "op": "replace"}])
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({username, password, firstName, lastName})
     };
 
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions)
+    return fetch(`${config.apiUrl}/users`, requestOptions)
         .then(handleResponse);
 }
 
@@ -74,6 +72,20 @@ function getUser(id) {
     };
 
     return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+}
+
+function updatePizzaLoveUser(id, pizzaLove) {
+    const requestOptions = {
+        method: 'PATCH',
+        headers: { 
+            'Authorization': authHeader().Authorization,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify([{"value": pizzaLove, "path": "/pizzaLove", "op": "replace"}])
+    };
+
+    return fetch(`${config.apiUrl}/users/${id}`, requestOptions)
+        .then(handleResponse);
 }
 
 function handleResponse(response) {

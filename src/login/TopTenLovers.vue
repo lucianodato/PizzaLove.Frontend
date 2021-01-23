@@ -8,7 +8,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="user in this.$store.state.user.all.topTenLovers" :key="user.id">
+                <tr v-for="user in this.$store.state.user.topTenLovers" :key="user.id">
                     <td>{{user.username}}</td>
                     <td>{{user.pizzaLove}}</td>
                 </tr>

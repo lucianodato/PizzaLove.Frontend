@@ -7,8 +7,8 @@
             </button>
         </div>
          <div class="form-group">
-            <p v-if="this.$store.state.user.all.user">
-                You Love pizzas this much: {{this.$store.state.user.all.user.pizzaLove}}
+            <p v-if="this.$store.state.user.user">
+                You Love pizzas this much: {{this.$store.state.user.user.pizzaLove}}
             </p>
         </div>
     </div>
@@ -19,7 +19,10 @@ export default {
     name: "PizzaLove",
     methods: {
         handleIncreasePizzaLove (e) {
-            this.$store.dispatch('user/updatePizzaLoveForUser', {"id": this.$store.state.authentication.user.id, "pizzaLove": this.$store.state.user.all.user.pizzaLove + 1});
+            this.$store.dispatch(
+                'user/updatePizzaLoveForUser',
+                 {"id": this.$store.state.authentication.user.id, "pizzaLove": this.$store.state.user.user.pizzaLove + 1}
+            );
         }
     }
 };

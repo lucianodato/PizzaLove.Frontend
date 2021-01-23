@@ -34,10 +34,6 @@ export default {
             return this.$store.state.authentication.status.loggingIn;
         }
     },
-    created () {
-        // reset login status
-        this.$store.dispatch('authentication/logout');
-    },
     methods: {
         handleSubmit (e) {
             this.submitted = true;

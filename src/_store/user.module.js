@@ -1,9 +1,12 @@
 import { userService } from '../_services';
+import { router } from '../_helpers';
 
 export const user = {
     namespaced: true,
     state: {
-        all: {}
+        status: {},
+        user: null,
+        topTenLovers: []
     },
     actions: {
         getUser({ commit }, { id }) {
@@ -12,45 +15,74 @@ export const user = {
             userService.getUser(id)
                 .then(
                     user => commit('getUserSuccess', user),
-                    error => commit('getUserFailure', error)
+                    error => dispatch('alert/error', error, { root: true })
                 );
         },
-        getTopTenLovers({ commit }) {
+        getTopTenLovers({ dispatch, commit }) {
             userService.getTopTenLovers()
                 .then(
                     topTenLovers => commit('getTopTenLoverSuccess', topTenLovers),
-                    error => commit('getTopTenLoverFailure', error)
+                    error => dispatch('alert/error', error, { root: true })
                 );
         },
-        updatePizzaLoveForUser({ commit },{ id, pizzaLove }) {
+        updatePizzaLoveForUser({ dispatch, commit },{ id, pizzaLove }) {
             userService.updatePizzaLoveUser(id, pizzaLove)
             .then(
                 updatePizzaLove => commit('updatePizzaLoveForUserSuccess', pizzaLove),
-                error => commit('updatePizzaLoveForUserFailure', error)
+                error => dispatch('alert/error', error, { root: true })
+            );
+        },
+        signUp({ dispatch, commit },{ username, password, firstName, lastName }) {
+            commit('signUpRequest');
+
+            userService.signUp(username, password, firstName, lastName)
+            .then(
+                signUp => {
+                    commit('signUpSuccess');
+                    router.push('/').catch(error => { });
+                },
+                error => {
+                    commit('signUpFailure');
+                    dispatch('alert/error', error, { root: true });
+                }
             );
         }
     },
     mutations: {
         getUserRequest(state) {
-            state.all = { loading: true };
+            state.status = { loading: true };
+            state.user = state.user;
+            state.topTenLovers = state.topTenLovers;
         },
         getUserSuccess(state, user) {
-            state.all = { user: user };
-        },
-        getUserFailure(state, error) {
-            state.all = { error };
+            state.status = { loading: false};
+            state.user = user;
+            state.topTenLovers = state.topTenLovers;
         },
         getTopTenLoverSuccess(state, topTenLovers) {
-            state.all = { ...state.all.topTenLovers, topTenLovers: topTenLovers};
-        },
-        getTopTenLoverFailure(state, error) {
-            state.all = { error };
+            state.status = { loading: true};
+            state.user = state.user;
+            state.topTenLovers = topTenLovers;
         },
         updatePizzaLoveForUserSuccess(state, pizzaLove) {
-            state.all = { user: {...state.all.user, pizzaLove : pizzaLove }};
+            state.status = { loading: false};
+            state.user = { ...state.user, pizzaLove : pizzaLove };
+            state.topTenLovers = state.topTenLovers;
         },
-        updatePizzaLoveForUserFailure(state, error) {
-            state.all = { error };
+        signUpSuccess(state) {
+            state.status = { signedIn: true };
+            state.user = state.user;
+            state.topTenLovers = state.topTenLovers;
+        },
+        signUpRequest(state) {
+            state.status = { signedIn: true };
+            state.user = state.user;
+            state.topTenLovers = state.topTenLovers;
+        },
+        signUpFailure(state) {
+            state.status = { signedIn: false };
+            state.user = state.user;
+            state.topTenLovers = state.topTenLovers;
         }
     }
 }
