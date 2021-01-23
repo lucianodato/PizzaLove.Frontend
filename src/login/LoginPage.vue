@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="alert alert-info">
-            Use test as username and password for testing<br />
+            Use "test" as username and password for testing<br />
             <router-link to="/signup" class="btn btn-link">
-                Or Sign Up
+                Or Sign Up for a new account
             </router-link>
         </div>
         <h2>Login</h2>
