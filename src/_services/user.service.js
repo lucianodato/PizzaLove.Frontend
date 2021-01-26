@@ -11,35 +11,32 @@ export const userService = {
     signUp
 };
 
-function login(username, password) {
+async function login(username, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     };
 
-    return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
-        .then(handleResponse)
-        .then(user => {
-            // login successful if there's a jwt token in the response
-            if (user.token) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('user', JSON.stringify(user));
-            }
-
-            return user;
-        });
+    const response = await fetch(`${config.apiUrl}/users/authenticate`, requestOptions);
+    const user = await handleResponse(response);
+    // login successful if there's a jwt token in the response
+    if (user.token) {
+        // store user details and jwt token in local storage to keep user logged in between page refreshes
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+    return user;
 }
 
-function signUp(username, password, firstName, lastName) {
+async function signUp(username, password, firstName, lastName) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({username, password, firstName, lastName})
     };
 
-    return fetch(`${config.apiUrl}/users`, requestOptions)
-        .then(handleResponse);
+    const response = await fetch(`${config.apiUrl}/users`, requestOptions);
+    return handleResponse(response);
 }
 
 function logout() {
@@ -47,34 +44,37 @@ function logout() {
     localStorage.removeItem('user');
 }
 
-function getAll() {
+async function getAll() {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+    const response = await fetch(`${config.apiUrl}/users`, requestOptions);
+    return handleResponse(response);
 }
 
-function getTopTenLovers() {
+async function getTopTenLovers() {
     const requestOptions = {
         method: 'GET',
         headers: {"Content-Type": "application/json"}
     };
 
-    return fetch(`${config.apiUrl}/users/GetTopTenUser`, requestOptions).then(handleResponse);
+    const response = await fetch(`${config.apiUrl}/users/GetTopTenUser`, requestOptions);
+    return handleResponse(response);
 }
 
-function getUser(id) {
+async function getUser(id) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+    const response = await fetch(`${config.apiUrl}/users/${id}`, requestOptions);
+    return handleResponse(response);
 }
 
-function updatePizzaLoveUser(id, pizzaLove) {
+async function updatePizzaLoveUser(id, pizzaLove) {
     const requestOptions = {
         method: 'PATCH',
         headers: { 
@@ -84,8 +84,8 @@ function updatePizzaLoveUser(id, pizzaLove) {
         body: JSON.stringify([{"value": pizzaLove, "path": "/pizzaLove", "op": "replace"}])
     };
 
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions)
-        .then(handleResponse);
+    const response = await fetch(`${config.apiUrl}/users/${id}`, requestOptions);
+    return handleResponse(response);
 }
 
 function handleResponse(response) {
