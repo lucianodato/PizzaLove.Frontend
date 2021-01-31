@@ -1,14 +1,12 @@
 import { userService } from '../_services';
 import { router } from '../_helpers';
 
-const user = JSON.parse(localStorage.getItem('user'));
-const initialState = user
-    ? { status: { loggedIn: true }, user }
-    : { status: {}, user: null };
-
 export const authentication = {
     namespaced: true,
-    state: initialState,
+    state:  {
+        status: {},
+        user: null 
+    },
     actions: {
         login({ dispatch, commit }, { username, password }) {
             commit('loginRequest', { username });
